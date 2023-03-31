@@ -32,10 +32,8 @@ from langchain.utils import get_from_dict_or_env
 
 from langchain.llms import PromptLayerOpenAI
 import promptlayer
-promptlayer.api_key = "pl_2165376193707c1ecd2b9044bfee557c"
-openai.api_key = "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"
-
-# OPENAI_API_KEY="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" GOOGLE_API_KEY="AIzaSyCZ-U4cMFOToCg2U4l2WPFyWi3zr76Oepk" GOOGLE_CSE_ID="e5882f618fe364ab2" flask run --port 5000
+promptlayer.api_key = ""
+openai.api_key = ""
 
 def save_chat(chat_id, chat_history):
     with open(f"chat_id_{chat_id}.txt", 'wb') as file:

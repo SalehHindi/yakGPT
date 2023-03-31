@@ -13,15 +13,14 @@ from langchain.utils import get_from_dict_or_env
 
 from langchain.llms import PromptLayerOpenAI
 import promptlayer
-promptlayer.api_key = "pl_2165376193707c1ecd2b9044bfee557c"
+promptlayer.api_key = ""
 
 
-# OPENAI_API_KEY="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" GOOGLE_API_KEY="AIzaSyCZ-U4cMFOToCg2U4l2WPFyWi3zr76Oepk" GOOGLE_CSE_ID="e5882f618fe364ab2" python conversation_modified_google_search.py
+
 
 
 # Google Search API Key
 # https://console.cloud.google.com/apis/credentials
-# AIzaSyCZ-U4cMFOToCg2U4l2WPFyWi3zr76Oepk
 
 # my_cse_id
 # http://www.google.com/cse/ -- all web
