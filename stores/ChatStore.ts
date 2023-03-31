@@ -57,7 +57,7 @@ interface ChatState {
 
 const defaultSettings = {
   model: "gpt-3.5-turbo",
-  temperature: 1,
+  temperature: 0,
   top_p: 1,
   n: 1,
   stop: "",
@@ -237,8 +237,11 @@ export const useChatStore = create<ChatState>()(
           apiKey,
           abortController,
           (content) => {
+            console.log("3333")
+            console.log(content)
             set((state) => ({
               chats: updateChatMessages(state.chats, chat.id, (messages) => {
+                console.log("2.9999")
                 const assistantMessage = messages.find(
                   (m) => m.id === assistantMsgId
                 );
@@ -250,6 +253,8 @@ export const useChatStore = create<ChatState>()(
             }));
           },
           (tokensUsed) => {
+            console.log("1111")
+            debugger
             set((state) => ({
               apiState: "idle",
               chats: updateChatMessages(state.chats, chat.id, (messages) => {
@@ -259,6 +264,8 @@ export const useChatStore = create<ChatState>()(
                 if (assistantMessage) {
                   assistantMessage.loading = false;
                 }
+                console.log("messages")
+                console.log(messages)
                 return messages;
               }),
             }));
@@ -267,7 +274,11 @@ export const useChatStore = create<ChatState>()(
           },
           (errorRes, errorBody) => {
             let message = errorBody;
+            console.log("message1")
+            console.log(message)
             try {
+              console.log("22222")
+              debugger
               message = JSON.parse(errorBody).error.message;
             } catch (e) {}
 
@@ -379,7 +390,7 @@ export const useChatStore = create<ChatState>()(
       },
     }),
     {
-      name: "chat-store-v23",
+      name: "chat-store-v23", // They store the chats at localstorage
       partialize: (state) => state,
     }
   )

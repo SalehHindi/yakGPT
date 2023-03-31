@@ -1,4 +1,4 @@
-import { IncomingMessage } from "http";
+import * as http from "http";
 import https from "https";
 import { Message, truncateMessages } from "./Message";
 import encoder from "@nem035/gpt-3-encoder";
@@ -55,14 +55,18 @@ export async function _streamCompletion(
   payload: string,
   apiKey: string,
   abortController?: AbortController,
-  callback?: ((res: IncomingMessage) => void) | undefined,
-  errorCallback?: ((res: IncomingMessage, body: string) => void) | undefined
+  callback?: ((res: http.IncomingMessage) => void) | undefined,
+  errorCallback?: ((res: http.IncomingMessage, body: string) => void) | undefined
 ) {
+  // const req = http.request(
   const req = https.request(
-    {
+    {      
       hostname: "api.openai.com",
       port: 443,
-      path: "/v1/chat/completions",
+      path: "/v1/chat/completions",     
+      // hostname: "127.0.0.1",
+      // port: 5000,
+      // path: "/stream",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,16 +75,25 @@ export async function _streamCompletion(
       signal: abortController?.signal,
     },
     (res) => {
+      console.log("res!!!")
+      console.log(res)
+      console.log(res.statusCode)
       if (res.statusCode !== 200) {
         let errorBody = "";
         res.on("data", (chunk) => {
+          console.log("on data")
+          console.log(chunk)
           errorBody += chunk;
         });
         res.on("end", () => {
+          console.log("on end")
+          // console.log(chunk)
+
           errorCallback?.(res, errorBody);
         });
         return;
       }
+      debugger
       callback?.(res);
     }
   );
@@ -119,9 +132,9 @@ export async function streamCompletion(
   params: ChatCompletionParams,
   apiKey: string,
   abortController?: AbortController,
-  callback?: ((res: IncomingMessage) => void) | undefined,
+  callback?: ((res: http.IncomingMessage) => void) | undefined,
   endCallback?: ((tokensUsed: number) => void) | undefined,
-  errorCallback?: ((res: IncomingMessage, body: string) => void) | undefined
+  errorCallback?: ((res: http.IncomingMessage, body: string) => void) | undefined
 ) {
   const submitMessages = truncateMessages(messages, 4096 - params.max_tokens);
   console.log(`Sending ${submitMessages.length} messages:`);
@@ -142,15 +155,19 @@ export async function streamCompletion(
   });
 
   let buffer = "";
-  const successCallback = (res: IncomingMessage) => {
+  const successCallback = (res: http.IncomingMessage) => {
+    console.log("successCallback before on data")
     res.on("data", (chunk) => {
+      console.log("successCallback after on data")
       if (abortController?.signal.aborted) {
         res.destroy();
         endCallback?.(0);
         return;
       }
-
+      console.log("CHUNK!!!")
+      console.log(chunk)
       const allMessages = chunk.toString().split("\n\n");
+      console.log(allMessages) // This is the returned message!!!
       for (const message of allMessages) {
         const cleaned = message.toString().slice(5);
         if (cleaned === "[DONE]") {
@@ -174,6 +191,7 @@ export async function streamCompletion(
     });
 
     res.on("end", () => {
+      console.log("on endddddd")
       const tokensUsed =
         countTokens(submitMessages.map((m) => m.content).join("\n")) +
         countTokens(buffer);

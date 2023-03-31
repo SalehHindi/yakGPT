@@ -33,8 +33,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>YakGPT</title>
-        <meta name="description" content="A new ChatGPT UI" />
+        <title>Alumin.ai</title>
+        <meta name="description" content="A new way to do work" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
