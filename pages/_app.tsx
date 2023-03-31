@@ -1,3 +1,5 @@
+import { UserProvider } from '@auth0/nextjs-auth0/client';
+
 import { AppProps } from "next/app";
 import Head from "next/head";
 import {
@@ -23,7 +25,7 @@ export default function App(props: AppProps) {
   };
 
   return (
-    <>
+    <UserProvider>
       <Head>
         <title>Page title</title>
         <meta
@@ -76,6 +78,6 @@ export default function App(props: AppProps) {
           <Component {...pageProps} />
         </MantineProvider>
       </ColorSchemeProvider>
-    </>
+    </UserProvider>
   );
 }

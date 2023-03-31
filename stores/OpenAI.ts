@@ -58,15 +58,15 @@ export async function _streamCompletion(
   callback?: ((res: http.IncomingMessage) => void) | undefined,
   errorCallback?: ((res: http.IncomingMessage, body: string) => void) | undefined
 ) {
-  // const req = http.request(
-  const req = https.request(
+  const req = http.request(
+  // const req = https.request(
     {      
-      hostname: "api.openai.com",
-      port: 443,
-      path: "/v1/chat/completions",     
-      // hostname: "127.0.0.1",
-      // port: 5000,
-      // path: "/stream",
+      // hostname: "api.openai.com",
+      // port: 443,
+      // path: "/v1/chat/completions",     
+      hostname: "127.0.0.1",
+      port: 5000,
+      path: "/stream",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
