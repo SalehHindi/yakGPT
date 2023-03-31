@@ -80,10 +80,10 @@ export default function Hero() {
         <div className={classes.inner}>
           <div className={classes.content}>
             <Title className={classes.title}>
-              <span className={classes.highlight}>YakGPT</span>
+              <span className={classes.highlight}>Alumin.ai</span>
             </Title>
             <Text color="dimmed" mt="md">
-              A simple, locally running ChatGPT UI.
+              Highly Customized chatGPT
             </Text>
 
             <List

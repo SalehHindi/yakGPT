@@ -2,17 +2,15 @@
 
 A simple, locally running ChatGPT UI that makes your text generation faster and chatting even more engaging!
 
-[![yakgpt.com](https://img.shields.io/badge/visit-website-green.svg?style=for-the-badge)](https://yakgpt.vercel.app)
+[![alumin.ai](https://img.shields.io/badge/visit-website-green.svg?style=for-the-badge)](https://yakgpt.vercel.app)
 
 ## Features
 
-- Run locally on browser – no need to install any applications
-- Faster than the official UI – connect directly to the API
+- Runs Fast on Browser
+- Customized chatGPT Everywhere
 - Easy mic integration – no more typing!
 - Use your own API key – ensure your data privacy and security
 
-- All state stored locally in localStorage – no analytics or external service calls
-- Access on https://yakgpt.vercel.app or run locally!
 
 ## 🚀 Getting Started
 
