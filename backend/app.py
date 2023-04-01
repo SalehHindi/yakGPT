@@ -7,7 +7,6 @@ import json
 import time
 
 import pickle
-import openai
 
 import requests
 import json
@@ -32,6 +31,9 @@ from langchain.utils import get_from_dict_or_env
 
 from langchain.llms import PromptLayerOpenAI
 import promptlayer
+openai = promptlayer.openai
+
+# TODO: This should be in an env and per user
 promptlayer.api_key = ""
 openai.api_key = ""
 
@@ -297,6 +299,7 @@ def stream_response():
         model="gpt-3.5-turbo", 
         messages = messages,
         # stream=True
+        pl_tags=["User:Saleh", "date", "this"],
     )
     assistant_response = completion.choices[0].message.content
 
@@ -315,7 +318,7 @@ def stream_response():
     
     }}
 
-    # This is what gets returned from openAI streaming request. Note that we are streaming and returning a chunk
+    # This is what gets returned from openAI streaming request. Note that we are streaming and returning a
     # [
     # data: {\
     #     "id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",
