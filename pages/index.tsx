@@ -8,14 +8,17 @@ import Hero from "@/components/Hero";
 import { useChatStore } from "@/stores/ChatStore";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const theme = useMantineTheme();
-
+  
   const apiKey = useChatStore((state) => state.apiKey);
   const [isHydrated, setIsHydrated] = useState(false);
+  // const isLoggedIn = useChatStore((state) => state.apiKey);
+  const { user, error, isLoading } = useUser();
 
   //Wait till NextJS rehydration completes
   useEffect(() => {
@@ -54,8 +57,8 @@ export default function Home() {
         })}
       >
         <div style={{ position: "relative", height: "100%" }}>
-          {apiKey ? <ChatDisplay /> : <Hero />}
-          {apiKey && <ChatInput />}
+          {user ? <ChatDisplay /> : <Hero />}
+          {user && <ChatInput />}
         </div>
       </AppShell>
       <AudioRecorder />

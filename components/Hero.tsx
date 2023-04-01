@@ -83,7 +83,7 @@ export default function Hero() {
               <span className={classes.highlight}>Alumin.ai</span>
             </Title>
             <Text color="dimmed" mt="md">
-              Highly Customized chatGPT
+              Highly Customized chatGPT for businesses
             </Text>
 
             <List
@@ -114,23 +114,26 @@ export default function Hero() {
 
             <Group mt={30}>
               <Button
+                component="a"
                 radius="xl"
                 size="md"
                 className={classes.control}
-                onClick={open}
+                // onClick={open}
+                href="http://localhost:3000/api/auth/login"
+                // href="http://34.30.166.74/api/auth/login"
               >
-                Enter API Key
+                Login
               </Button>
               <Button
                 component="a"
-                href="https://github.com/yakGPT/yakGPT"
+                href="https://lumin.ai"
                 variant="default"
                 radius="xl"
                 size="md"
                 className={classes.control}
-                leftIcon={<IconBrandGithub size={20} />}
+                // leftIcon={<IconBrandGithub size={20} />}
               >
-                Source Code
+                Lumin.ai
               </Button>
             </Group>
           </div>

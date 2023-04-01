@@ -149,7 +149,7 @@ export default function NewChatCarousel() {
 
   return (
     <Container py="xl">
-      <h2 style={{ textAlign: "center" }}> Choose a prompt...</h2>
+      <h2 style={{ textAlign: "center" }}>Choose a copilot</h2>
       <CardsCarousel>
         {Object.keys(characters).map((key) => {
           // @ts-ignore
