@@ -292,21 +292,48 @@ def stream_response():
     print("Hit streammmm")
     data = request.get_json()
     messages = data.get("messages", [])
-    # import pdb; pdb.set_trace()
 
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo", 
-        messages = messages
+        messages = messages,
+        stream=True
     )
     assistant_response = completion.choices[0].message.content
-    message = {
-        "role": "assistant",
-        "message": assistant_response,
-    }
-    # import pdb; pdb.set_trace()
+
+    resp = {"data": {
+        "id": "chatcmpl-70cqSAME6tnj64Sv7Mpf--------STFU",
+        "object": "chat.completion.chunk",
+        "created": 1680383676,
+        "model": "gpt-3.5-turbo-0301",
+        "choices": [
+            {
+                "delta": {"content": assistant_response},
+                "index": 0,
+                "finish_reason": 'null? ',
+            }
+        ],
+    
+    }}
+
+    # This is what gets returned from openAI streaming request. Note that we are streaming and returning a chunk
+    # [
+    # data: {\
+    #     "id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",
+    #     \"object\":\"chat.completion.chunk\",
+    #     \"created\":1680383676,
+    #     \"model\":\"gpt-3.5-turbo-0301\",
+    #     \"choices\":[
+    #         {\"delta\":{
+    #             \"content\":\" from\"
+    #         },
+    #         \"index\":0,
+    #         \"finish_reason\":null}
+    #     ]
+    # }
+    # ]
 
     # return Response(stream_with_context(number_stream()), content_type='application/json')
-    return Response(stream_with_context(assistant_response), content_type='application/json')
+    return Response(stream_with_context(json.dumps(resp)), content_type='application/json')
 
 # @app.route("/chat-history-save", methods=['POST'])
 # def chat_history_save():

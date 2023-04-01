@@ -93,7 +93,7 @@ export async function _streamCompletion(
         });
         return;
       }
-      debugger
+      // debugger
       callback?.(res);
     }
   );
@@ -168,24 +168,82 @@ export async function streamCompletion(
       console.log(chunk)
       const allMessages = chunk.toString().split("\n\n");
       console.log(allMessages) // This is the returned message!!!
+     
+    //   [
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{\"content\":\" from\"},\"index\":0,\"finish_reason\":null}]}",
+    //     ""
+    // ]
+
+    //   [
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{\"content\":\" \"},\"index\":0,\"finish_reason\":null}]}",
+    //     ""
+    // ]
+
+    //   [
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{\"content\":\"178\"},\"index\":0,\"finish_reason\":null}]}",
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{\"content\":\"9\"},\"index\":0,\"finish_reason\":null}]}",
+    //     ""
+    // ]
+
+    //   [
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{\"content\":\"-\"},\"index\":0,\"finish_reason\":null}]}",
+    //     ""
+    // ]
+
+    //   [
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{\"content\":\"179\"},\"index\":0,\"finish_reason\":null}]}",
+    //     ""
+    // ]
+
+    //   [
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{\"content\":\"7\"},\"index\":0,\"finish_reason\":null}]}",
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{\"content\":\".\"},\"index\":0,\"finish_reason\":null}]}",
+    //     ""
+    //   ]
+
+
+    //   [
+    //     "data: {\"id\":\"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\",\"object\":\"chat.completion.chunk\",\"created\":1680383676,\"model\":\"gpt-3.5-turbo-0301\",\"choices\":[{\"delta\":{},\"index\":0,\"finish_reason\":\"stop\"}]}",
+    //     "data: [DONE]",
+    //     ""
+    //   ]      
+
+
+    // 
+    // 
+    // 
+    // My response: 
+      // "{\"data\": {\"id\": \"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\", \"object\": \"chat.completion.chunk\", \"created\": 1680383676, \"model\": \"gpt-3.5-turbo-0301\", \"choices\": [{\"delta\": {\"content\": \"next chunk!!\"}, \"index\": 0, \"finish_reason\": null}]}}"
+      debugger
       for (const message of allMessages) {
-        const cleaned = message.toString().slice(5);
+        const cleaned = "\{\"" + message.toString().slice(2);
+        console.log("cleaned")
+        console.log(cleaned)
         if (cleaned === "[DONE]") {
           return;
         }
 
         let parsed;
         try {
-          parsed = JSON.parse(cleaned);
+          parsed = JSON.parse(cleaned).data;
+          console.log("PARSED")
         } catch (e) {
+          console.log("ERROR")
           return;
         }
 
+        console.log("waterfall")
+        console.log(parsed)
+        console.log(parsed.choices[0])
+        console.log(parsed.choices[0]?.delta)
+        console.log(parsed.choices[0]?.delta?.content)
         const content = parsed.choices[0]?.delta?.content;
         if (content === undefined) {
           continue;
         }
         buffer += content;
+        console.log("BUFFER+=")
+        console.log(buffer)
         callback?.(content);
       }
     });
