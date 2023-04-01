@@ -296,7 +296,7 @@ def stream_response():
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo", 
         messages = messages,
-        stream=True
+        # stream=True
     )
     assistant_response = completion.choices[0].message.content
 
