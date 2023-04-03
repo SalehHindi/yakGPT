@@ -120,7 +120,7 @@ export default function Hero() {
                 className={classes.control}
                 // onClick={open}
                 href="http://localhost:3000/api/auth/login"
-                // href="http://34.30.166.74/api/auth/login"
+                // href="http://34.30.17.83/api/auth/login"
               >
                 Login
               </Button>
