@@ -140,14 +140,15 @@ tools = [
     Tool(
         name = "Current Search",
         func=search.run,
-        description="useful for when you need to answer any factual questions"
+        description="useful for when you need to google an actor's name"
+        # "Can you give me the name of 3 actors and for each actor do a google search?"
     ),
 ]
 # How can I specify a query like "site:linkedin.com inurl:posts {query}?"
 
 memory = ConversationBufferMemory(memory_key="chat_history")
 
-llm = PromptLayerOpenAI(temperature=0, pl_tags=["fintainium"])
+llm = PromptLayerOpenAI(temperature=0, pl_tags=["agent"])
 # llm=OpenAI(temperature=0)
 
 # This is the promot the agent chain is using

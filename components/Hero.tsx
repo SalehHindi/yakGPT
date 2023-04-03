@@ -126,14 +126,14 @@ export default function Hero() {
               </Button>
               <Button
                 component="a"
-                href="https://lumin.ai"
+                href="https://alumin.ai"
                 variant="default"
                 radius="xl"
                 size="md"
                 className={classes.control}
                 // leftIcon={<IconBrandGithub size={20} />}
               >
-                Lumin.ai
+                alumin.ai
               </Button>
             </Group>
           </div>
