@@ -119,8 +119,8 @@ export default function Hero() {
                 size="md"
                 className={classes.control}
                 // onClick={open}
-                href="http://localhost:3000/api/auth/login"
-                // href="http://34.30.17.83/api/auth/login"
+                // href="http://localhost:3000/api/auth/login"
+                href="http://app.alumin.ai/api/auth/login"
               >
                 Login
               </Button>

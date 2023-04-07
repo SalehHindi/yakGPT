@@ -109,7 +109,7 @@ const characters = {
   "File Jobs": {
     shortDescription: "Debug and fix file jobs",
     characterDescription:
-      "World-class therapist with a specialization in Cognitive Behavioral Therapy",
+      "Debug and fix file jobs2",
     avatar: therapist,
   },
   "API Builder": {
@@ -117,6 +117,17 @@ const characters = {
     avatar: idea_generator,
     prompt: `:`,
   },
+  "Root Etymology": {
+    shortDescription: "Fun",
+    avatar: idea_generator,
+    prompt: `I will give you two words and I want you to trace the origins of the words, detailing each step, until you find a language origin in which the word origins were both spoken. For example, as 'hippo' and 'theology' both ultimately have roots in Greek, the answer would start 'Greek'. Start with the words 'management' and 'pizza'.`,
+  },
+  "Time Travel Guide": {
+    shortDescription: "Fun",
+    avatar: idea_generator,
+    prompt: `I want you to act as my time travel guide. I will provide you with the historical period or future time I want to visit and you will suggest best events, sights, or people to experience, as if we were living in those times. Do not write explanations, simply provide interesting suggestions and stay in character.`,
+  },
+
 };
 
 function CardsCarousel({ children }: { children: React.ReactNode }) {

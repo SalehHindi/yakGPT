@@ -29,6 +29,8 @@ const useStyles = createStyles((theme) => ({
     transition: "transform 500ms ease",
     marginTop: rem(-9),
     marginLeft: rem(-6),
+    width: '20vw',
+    height: '20vw'
   },
 
   overlay: {
@@ -89,9 +91,9 @@ export default function ImageCard({
         <Image
           src={image}
           fill
-          sizes="(max-width: 768px) 100vw,
-                  (max-width: 1200px) 50vw,
-                  33vw"
+          sizes="(width: 20vw) 20vw,
+                  (height: 20vw) 20vw,
+                  20vw"
           alt={title}
         />
       </div>

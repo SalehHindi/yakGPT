@@ -65,14 +65,14 @@ const useStyles = createStyles((theme: MantineTheme) => ({
   userMessageContainer: {
     backgroundColor:
       theme.colorScheme === "dark"
-        ? theme.colors.dark[8]
-        : theme.colors.gray[1],
+        ? "purple"
+        : "pink",
   },
   botMessageContainer: {
     backgroundColor:
       theme.colorScheme === "dark"
-        ? theme.colors.dark[7]
-        : theme.colors.gray[2],
+        ? "green"
+        : "yellow",
   },
   userMessage: {
     // All children that are textarea should have color white

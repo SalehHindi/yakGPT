@@ -9,7 +9,7 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 
 export default function KeyModal({ close }: { close: () => void }) {
   const apiKey = useChatStore((state) => state.apiKey);
-  const setApiKey = useChatStore((state) => state.setApiKey);
+  const setApiKey = useChatStore((state) => state.setApiKey || "sk-sdmkmfksdmlsmfsdmfmd");
   const [checkStatus, setCheckStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
