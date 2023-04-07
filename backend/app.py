@@ -1,10 +1,10 @@
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import os
 from flask import Flask, jsonify, send_from_directory, request, Response, stream_with_context
-from flask_cors import CORS
 import os
 import json
 import time
+import datetime
 
 import pickle
 
@@ -111,7 +111,7 @@ def chat():
         # dicts = messages_to_dict(history.messages)
         # new_messages = messages_from_dict(dicts)
 
-        llm = PromptLayerOpenAI(temperature=0, pl_tags=["fintainium", chat_id])
+        llm = PromptLayerOpenAI(temperature=0, pl_tags=["fintech", chat_id])
         # llm=OpenAI(temperature=0)
 
         # This is the promot the agent chain is using
@@ -180,7 +180,7 @@ def chat2():
         chat_history = memory.load_memory_variables({}).get("history")
 
         # import pdb; pdb.set_trace()
-        llm = PromptLayerOpenAI(temperature=0, pl_tags=["fintainium", chat_id])
+        llm = PromptLayerOpenAI(temperature=0, pl_tags=["fintech", chat_id])
 
         template = """Assistant is a large language model trained by OpenAI.
 
@@ -294,19 +294,25 @@ def stream_response():
     print("Hit streammmm")
     data = request.get_json()
     messages = data.get("messages", [])
+    chatId = data.get("chatId", 'chatIdUnknown')
+    userId = "Saleh"
+
+    current_date = datetime.datetime.now()
+    formatted_date = current_date.strftime('%Y-%m-%d')
+    epoch_time = int(current_date.timestamp())
 
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo", 
         messages = messages,
         # stream=True
-        pl_tags=["User:Saleh", "date", "this"],
+        pl_tags=[f"User:{userId}", "gpt-3.5-turbo", formatted_date, chatId], # TODO: Should add dev, prod, model    
     )
     assistant_response = completion.choices[0].message.content
 
     resp = {"data": {
         "id": "chatcmpl-70cqSAME6tnj64Sv7Mpf--------STFU",
         "object": "chat.completion.chunk",
-        "created": 1680383676,
+        "created": epoch_time,
         "model": "gpt-3.5-turbo-0301",
         "choices": [
             {
@@ -315,7 +321,6 @@ def stream_response():
                 "finish_reason": 'null? ',
             }
         ],
-    
     }}
 
     # This is what gets returned from openAI streaming request. Note that we are streaming and returning a

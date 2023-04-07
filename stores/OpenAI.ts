@@ -128,6 +128,7 @@ export async function streamCompletion(
   messages: Message[],
   params: ChatCompletionParams,
   apiKey: string,
+  activeChatId?: String, 
   abortController?: AbortController,
   callback?: ((res: http.IncomingMessage) => void) | undefined,
   endCallback?: ((tokensUsed: number) => void) | undefined,
@@ -143,6 +144,7 @@ export async function streamCompletion(
   );
 
   const payload = JSON.stringify({
+    chatId: activeChatId,
     messages: messages.map(({ role, content }) => ({ role, content })),
     stream: true,
     ...{

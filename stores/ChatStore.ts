@@ -235,6 +235,7 @@ export const useChatStore = create<ChatState>()(
           chat.messages,
           settings,
           apiKey,
+          chat.id,
           abortController,
           (content) => {
             console.log("3333")
@@ -322,6 +323,7 @@ export const useChatStore = create<ChatState>()(
               [msg, ...chat.messages.slice(1)],
               settings,
               apiKey,
+              chat.id,
               undefined,
               (content) => {
                 set((state) => ({
