@@ -12,6 +12,7 @@ import requests
 import json
 import sseclient
 
+import pdb
 
 # from langchain import OpenAI
 from langchain.agents import Tool
@@ -36,6 +37,20 @@ openai = promptlayer.openai
 # TODO: This should be in an env and per user
 promptlayer.api_key = ""
 openai.api_key = ""
+
+
+chatTemplate1 = """Assistant is a large language model trained by OpenAI.
+
+Assistant is designed to be able to assist with a wide range of tasks, from answering simple questions to providing in-depth explanations and discussions on a wide range of topics. As a language model, Assistant is able to generate human-like text based on the input it receives, allowing it to engage in natural-sounding conversations and provide responses that are coherent and relevant to the topic at hand.
+
+Assistant is constantly learning and improving, and its capabilities are constantly evolving. It is able to process and understand large amounts of text, and can use this knowledge to provide accurate and informative responses to a wide range of questions. Additionally, Assistant is able to generate its own text based on the input it receives, allowing it to engage in discussions and provide explanations and descriptions on a wide range of topics.
+
+Overall, Assistant is a powerful tool that can help with a wide range of tasks and provide valuable insights and information on a wide range of topics. Whether you need help with a specific question or just want to have a conversation about a particular topic, Assistant is here to assist.
+
+{history}
+Assistant:"""
+
+
 
 def save_chat(chat_id, chat_history):
     with open(f"chat_id_{chat_id}.txt", 'wb') as file:
@@ -238,8 +253,6 @@ def chat3():
         }
         all_messages += assistant_message
 
-        pdb.set_trace()
-
         # TODO: add new message as system
         # TODO: return all messages
     
@@ -295,6 +308,7 @@ def stream_response():
     data = request.get_json()
     messages = data.get("messages", [])
     chatId = data.get("chatId", 'chatIdUnknown')
+    model = data.get("model", 'gpt-3.5-turbo')
     userId = "Saleh"
 
     current_date = datetime.datetime.now()
@@ -302,10 +316,10 @@ def stream_response():
     epoch_time = int(current_date.timestamp())
 
     completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo", 
+        model=model, 
         messages = messages,
         # stream=True
-        pl_tags=[f"User:{userId}", "gpt-3.5-turbo", formatted_date, chatId], # TODO: Should add dev, prod, model    
+        pl_tags=[f"User:{userId}", model, formatted_date, chatId], # TODO: Should add dev, prod, model    
     )
     assistant_response = completion.choices[0].message.content
 
@@ -341,6 +355,111 @@ def stream_response():
     # ]
 
     # return Response(stream_with_context(number_stream()), content_type='application/json')
+    return Response(stream_with_context(json.dumps(resp)), content_type='application/json')
+
+
+@app.route('/agent', methods=["POST"])
+def agent_respond():
+    # This is for chats processed by not chat models, like text-davinci-003
+    # requests come in as the following
+    # 
+    # {'chatId': 'chat12345',
+    #  'frequency_penalty': 0,
+    #  'logit_bias': {},
+    #  'max_tokens': 1024,
+    #  'messages': [{'content': 'Who is there?', 'role': 'assistant'},
+    #               {'content': 'As an AI language model, I am a computer program, '
+    #                           'so I don\'t "exist" in the physical sense. However, '
+    #                           'I am here and ready to assist you! How can I help '
+    #                           'you today?',
+    #                'role': 'user'},
+    #               {'content': 'Who is mike tyson?', 'role': 'assistant'},
+    #               {'content': 'Mike Tyson is a retired American professional boxer '
+    #                           'who is considered one of the greatest heavyweight '
+    #                           'boxers of all time. He was born on June 30, 1966, '
+    #                           'in Brooklyn, New York, and had a career spanning '
+    #                           'from 1985 to 2005. Tyson held multiple heavyweight '
+    #                           'titles, including the WBA, WBC, and IBF titles, and '
+    #                           'was known for his powerful punching and aggressive '
+    #                           'fighting style. He retired with a record of 50 '
+    #                           'wins, 6 losses, and 2 no contests. Tyson is also '
+    #                           'known for his tumultuous personal life and various '
+    #                           'legal issues, as well as his later career as an '
+    #                           'actor and media personality.',
+    #                'role': 'user'},
+    #               {'content': 'Hello?', 'role': 'assistant'},
+    #               {'content': 'Hello! How may I assist you today?', 'role': 'user'},
+    #               {'content': 'Hello?', 'role': 'assistant'},
+    #               {'content': 'Hello there! How can I assist you today?',
+    #                'role': 'user'},
+    #               {'content': 'Hey?', 'role': 'assistant'},
+    #               {'content': '', 'role': 'user'},
+    #               {'content': 'Bob saget?', 'role': 'user'},
+    #               {'content': '', 'role': 'assistant'}],
+    #  'model': 'gpt-3.5-turbo',
+    #  'n': 1,
+    #  'presence_penalty': 0,
+    #  'stop': '',
+    #  'stream': True,
+    #  'temperature': 1,
+    #  'top_p': 1}
+    # 
+    # 
+    # And then I need to format it into a chatbot and then output the result in the same resp shape as chat-gpt
+
+    print("Hit stream 22")
+    data = request.get_json()
+    messages = data.get("messages", [])
+    chatId = data.get("chatId", 'chatIdUnknown')
+    model = data.get("model", 'text-davinci-003')
+    userId = "Saleh"
+
+    current_date = datetime.datetime.now()
+    formatted_date = current_date.strftime('%Y-%m-%d')
+    epoch_time = int(current_date.timestamp())
+
+    # TODO: Should system prompt actually be the prompt?
+    history = "" # TODO: Limit messages so it's only ~2k tokens    
+    for message in messages[:-1]: # skip the last message bc it is blank
+        if message['role'] == "assistant":
+            history += f"Human: {message['content']}\n"
+        elif message['role'] == "user":
+            history += f"Assistant: {message['content']}\n"
+        else: # system?
+            pass
+
+        
+    prompt = PromptTemplate(
+        input_variables=["history"], 
+        template=chatTemplate1
+    )
+
+    llm = PromptLayerOpenAI(
+        temperature=0, 
+        pl_tags=[f"User:{userId}", model, formatted_date, chatId], # TODO: Should add dev, prod, model
+    )
+
+    chain = LLMChain(llm=llm, prompt=prompt)
+
+    assistant_response = chain.run(
+        # human_input="I want you to act as a Linux terminal. I will type commands and you will reply with what the terminal should show. I want you to only reply with the terminal output inside one unique code block, and nothing else. Do not write explanations. Do not type commands unless I instruct you to do so. When I need to tell you something in English I will do so by putting text inside curly brackets {like this}. My first command is pwd.",
+        history=history
+    )
+
+    resp = {"data": {
+        "id": "chatcmpl-70cqSAME6tnj64Sv7Mpf--------STFU",
+        "object": "chat.completion.chunk",
+        "created": epoch_time,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "delta": {"content": assistant_response},
+                "index": 0,
+                "finish_reason": 'null? ',
+            }
+        ],
+    }}
+
     return Response(stream_with_context(json.dumps(resp)), content_type='application/json')
 
 # @app.route("/chat-history-save", methods=['POST'])

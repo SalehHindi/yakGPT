@@ -56,7 +56,7 @@ interface ChatState {
 }
 
 const defaultSettings = {
-  model: "gpt-3.5-turbo",
+  model: "gpt-3.5-turbo", // TODO: Change model depending on dropdown
   temperature: 0,
   top_p: 1,
   n: 1,
@@ -73,7 +73,7 @@ const initialChatId = uuidv4();
 
 const initialState = {
   apiState: "idle" as APIState,
-  apiKey: "sk-1234sdfsdfsfsfsdf",
+  apiKey: "sk-1234sdfsdfsfsfsdf", // Fake ID to avoid errors
   chats: [
     {
       id: initialChatId,
@@ -88,6 +88,7 @@ const initialState = {
   navOpened: false,
   pushToTalkMode: false,
   editingMessage: undefined,
+  // requestType (to decide which endpoint to hit)
 };
 
 export const useChatStore = create<ChatState>()(
