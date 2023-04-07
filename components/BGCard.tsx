@@ -13,10 +13,10 @@ const useStyles = createStyles((theme) => ({
   card: {
     position: "relative",
     height: rem(280),
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[6]
-        : theme.colors.gray[0],
+    backgroundColor: "white",
+      // theme.colorScheme === "dark"
+      //   ? theme.colors.dark[6]
+      //   : theme.colors.gray[0],
 
     [`&:hover .${getStylesRef("image")}`]: {
       transform: "scale(1.03)",
@@ -63,14 +63,14 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface ImageCardProps {
-  image: string;
+  // image: string;
   title: string;
   description: string;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 export default function ImageCard({
-  image,
+  // image,
   title,
   description,
   onClick,
@@ -88,14 +88,14 @@ export default function ImageCard({
       onClick={onClick}
     >
       <div className={classes.image}>
-        <Image
+        {/* <Image
           src={image}
           fill
           sizes="(width: 20vw) 20vw,
                   (height: 20vw) 20vw,
                   20vw"
           alt={title}
-        />
+        /> */}
       </div>
       <div className={classes.overlay} />
 

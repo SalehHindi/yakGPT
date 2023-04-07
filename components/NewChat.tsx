@@ -169,7 +169,7 @@ export default function NewChatCarousel() {
             <BGCard
               key={key}
               title={key}
-              image={character.avatar.src}
+              // image={character.avatar.src}
               description={character.shortDescription}
               onClick={(e) => {
                 setChosenCharacter(key);
@@ -196,6 +196,7 @@ export default function NewChatCarousel() {
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
+          // background: "red",
         }}
       >
         <h2> Or start by simply typing below</h2>
