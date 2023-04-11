@@ -113,12 +113,7 @@ const useStyles = createStyles((theme: MantineTheme) => ({
 }));
 
 export default function ChatDisplay({ message }: { message: Message }) {
-  const { classes, cx } = useStyles();
-
-  const [showContextMenu, setShowContextMenu] = useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
-  const outerDivRef = useRef(null);
-  
+  const { classes, cx } = useStyles();  
 
   const setEditingMessage = useChatStore((state) => state.setEditingMessage);
   const pushToTalkMode = useChatStore((state) => state.pushToTalkMode);
@@ -134,23 +129,6 @@ export default function ChatDisplay({ message }: { message: Message }) {
     }
   };
 
-  const onContextMenu = (event: any) => {
-    event.preventDefault();
-    setShowContextMenu(true);
-    setContextMenuPosition({ x: event.clientX-210, y: event.clientY-35 });
-  };
-
-  const onClick = (event: any) => {
-    if (outerDivRef.current && true) {
-      setShowContextMenu(false);
-    }
-  };
-
-  const onCustomContextMenuClick = (event: any) => {
-    setShowContextMenu(false);
-  };  
-  
-
   return (
     <div
       key={message.id}
@@ -160,8 +138,6 @@ export default function ChatDisplay({ message }: { message: Message }) {
           ? classes.userMessageContainer
           : classes.botMessageContainer
       )}
-      // onContextMenu={onContextMenu}
-      // onClick={onClick}    
     >
       <div
         className={cx(
@@ -206,12 +182,6 @@ export default function ChatDisplay({ message }: { message: Message }) {
           )}
         </div>
       </div>
-      <CustomContextMenu
-        showContextMenu={showContextMenu}
-        contextMenuPosition={contextMenuPosition}
-        onClick={onCustomContextMenuClick}
-      />
-
     </div>
   );
 }

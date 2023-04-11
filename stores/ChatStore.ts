@@ -88,6 +88,7 @@ const initialState = {
   navOpened: false,
   pushToTalkMode: false,
   editingMessage: undefined,
+  model: defaultSettings['model']
   // requestType (to decide which endpoint to hit)
 };
 
@@ -351,6 +352,7 @@ export const useChatStore = create<ChatState>()(
         set((state) => ({ colorScheme: scheme })),
       setApiKey: (key: string) => set((state) => ({ apiKey: key })),
       setApiState: (apiState: APIState) => set((state) => ({ apiState })),
+      // setModel: (model: string) => set((state) => ({ model })),
       updateSettingsForm: (settingsForm: ChatState["settingsForm"]) =>
         set((state) => ({ settingsForm })),
       abortCurrentRequest: () => {
