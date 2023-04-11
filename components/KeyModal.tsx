@@ -35,10 +35,62 @@ export default function KeyModal({ close }: { close: () => void }) {
 
   return (
     <div>
-      <h2>🔑 Enter Your OpenAI API Key:</h2>
+      <h2>🔑 Enter Your API Key:</h2>
       <p>
-        You need an OpenAI API Key. Your API Key is stored locally on your
-        browser and never sent anywhere else.
+        OpenAI API Key
+      </p>
+
+      <Box mx="auto">
+        <form
+          onSubmit={form.onSubmit(async ({ key }) => {
+            setCheckStatus("loading");
+            const keyValid = await testKey(key);
+
+            if (keyValid) {
+              notifications.show({ message: "Key saved!", color: "green" });
+
+              setApiKey(key);
+              close();
+            } else if (keyValid === false) {
+              form.setErrors({ key: "Key authentication failed" });
+            } else {
+              notifications.show({
+                message: "Something went wrong",
+                color: "red",
+              });
+            }
+            setCheckStatus("idle");
+          })}
+        >
+          <TextInput
+            withAsterisk
+            label="API Key"
+            placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            rightSection={icon}
+            {...form.getInputProps("key")}
+          />
+
+          <Group position="right" mt="md">
+            <Button type="submit">Save</Button>
+            <Button onClick={close} variant="light">
+              Cancel
+            </Button>
+          </Group>
+        </form>
+      </Box>
+      <p>
+        → Get your API key from{" "}
+        <a
+          href="https://platform.openai.com/account/api-keys"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open AI dashboard
+        </a>
+        .
+      </p>
+      <p>
+        JIRA Key
       </p>
 
       <Box mx="auto">
