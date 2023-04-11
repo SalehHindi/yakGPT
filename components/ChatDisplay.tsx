@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import CustomContextMenu from './CustomContextMenu';
 
 import {
   ActionIcon,
@@ -109,6 +110,10 @@ const useStyles = createStyles((theme: MantineTheme) => ({
 const ChatDisplay = () => {
   const { classes, theme } = useStyles();
 
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+  const outerDivRef = useRef(null);
+
   const chats = useChatStore((state) => state.chats);
   const activeChatId = useChatStore((state) => state.activeChatId);
 
@@ -128,6 +133,23 @@ const ChatDisplay = () => {
     // allow inaccuracy by adding some
     return height <= winScroll + 1;
   };
+
+  const onContextMenu = (event: any) => {
+    event.preventDefault();
+    setShowContextMenu(true);
+    setContextMenuPosition({ x: event.clientX+window.pageXOffset-197, y: event.clientY+window.pageYOffset-35 });
+  };
+
+  const onClick = (event: any) => {
+    // if (outerDivRef.current && true) {
+    setShowContextMenu(false);
+    // }
+  };
+
+  const onCustomContextMenuClick = (event: any) => {
+    setShowContextMenu(false);
+  };  
+
 
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(true);
 
@@ -155,6 +177,8 @@ const ChatDisplay = () => {
     <div
       className={classes.container}
       style={{ paddingBottom: pushToTalkMode ? "10em" : "5em" }}
+      onContextMenu={onContextMenu}
+      onClick={onClick}    
     >
       <div className={classes.chatContainer}>
         <MuHeader />
@@ -179,6 +203,12 @@ const ChatDisplay = () => {
           <IconChevronsDown size="1.1rem" stroke={1.5} />
         </ActionIcon>
       )}
+      <CustomContextMenu
+        showContextMenu={showContextMenu}
+        contextMenuPosition={contextMenuPosition}
+        onClick={onCustomContextMenuClick}
+      />
+
     </div>
   );
 };
