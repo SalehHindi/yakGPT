@@ -369,6 +369,7 @@ export const useChatStore = create<ChatState>()(
           chats: state.chats.map((c) => {
             if (c.id === state.activeChatId) {
               c.chosenCharacter = name;
+              // TODO: Character is chatType everywhere
             }
             return c;
           }),

@@ -29,6 +29,7 @@ function CustomContextMenu({ showContextMenu, contextMenuPosition}: any) {
     const { classes, theme } = useStyles();
 
     const submitMessage = useChatStore((state) => state.submitMessage);
+    const chats = useChatStore((state) => state.chats);
 
     console.log("context menu:")
     console.log(showContextMenu)
@@ -36,24 +37,28 @@ function CustomContextMenu({ showContextMenu, contextMenuPosition}: any) {
 
 
     const onCopyClick = (event: any) => {
+      console.log("!!! Chats")
+      console.log(chats)
       
     }
     const onExpandClick = (event: any) => {
 
-      const highlightedText = window?.getSelection()?.toString()
+      const highlightedText = window.getSelection()?.toString()
+      console.log("highlightedText")
+      console.log(highlightedText)
 
       submitMessage({
         id: uuidv4(),
-        content: `Can you expand on the following text:\n${highlightedText}`,
+        content: `Can you expand on the following text:\n\n${highlightedText}`,
         role: "user",
       });
     }
     const onMoreExamplesClick = (event: any) => {
-      const highlightedText = window?.getSelection()?.toString()
+      const highlightedText = window.getSelection()?.toString()
 
       submitMessage({
         id: uuidv4(),
-        content: `Can you provide more examples of the following text:\n${highlightedText}`,
+        content: `Can you provide more examples of the following text:\n\n${highlightedText}`,
         role: "user",
       });
 
@@ -102,8 +107,8 @@ function CustomContextMenu({ showContextMenu, contextMenuPosition}: any) {
         {/* <div style={{ position: 'absolute', top: contextMenuPosition.y, left: contextMenuPosition.x }}> */}
           <div>
             <div id="copy" className={classes.whatever} style={{borderBottom: "1px solid beige"}} onClick={onCopyClick}>Copy</div>
-            <div id="expand" className={classes.whatever} style={{borderBottom: "1px solid beige"}} onClick={onExpandClick}>Expand</div>
-            <div id="more-examples" className={classes.whatever} style={{borderBottom: "1px solid beige"}} onClick={onMoreExamplesClick}>More Examples</div>
+            <div id="expand" className={classes.whatever} style={{borderBottom: "1px solid beige"}} onMouseDown={onExpandClick}>Expand</div>
+            <div id="more-examples" className={classes.whatever} style={{borderBottom: "1px solid beige"}} onMouseDown={onMoreExamplesClick}>More Examples</div>
             <div id="agent" className={classes.whatever} style={{borderBottom: "1px solid beige"}} onClick={onAgent}>Agent</div>
           </div>
         </div>
