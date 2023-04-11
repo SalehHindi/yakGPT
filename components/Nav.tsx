@@ -25,6 +25,8 @@ import {
 import { useChatStore } from "@/stores/ChatStore";
 import KeyModal from "./KeyModal";
 import SettingsModal from "./SettingsModal";
+import { useUser } from '@auth0/nextjs-auth0/client';
+
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -118,6 +120,11 @@ const useStyles = createStyles((theme) => ({
 export default function NavbarSimple() {
   const { classes, cx, theme } = useStyles();
 
+  const { user, error, isLoading } = useUser();
+
+
+
+
   const [openedKeyModal, { open: openKeyModal, close: closeKeyModal }] =
     useDisclosure(false);
   const [
@@ -207,107 +214,110 @@ export default function NavbarSimple() {
 
   links.reverse();
 
-  return (
-    <Navbar
-      height={"100%"}
-      p="md"
-      hiddenBreakpoint="sm"
-      hidden={!navOpened}
-      width={{ sm: 200, lg: 250 }}
-      sx={{ zIndex: 1001 }}
-    >
-      <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-        <Navbar.Section className={classes.header}>
-          <a
-            href="#"
-            className={classes.link}
-            onClick={(event) => {
-              event.preventDefault();
-              addChat();
-            }}
-          >
-            <IconPlus className={classes.linkIcon} stroke={1.5} />
-            <span>New Chat</span>
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={navOpened}
-                onClick={() => setNavOpened(!navOpened)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
-          </a>
-        </Navbar.Section>
-      </MediaQuery>
+  return (<div>
+    {user &&
+  
+   <Navbar
+     height={"100%"}
+     p="md"
+     hiddenBreakpoint="sm"
+     hidden={!navOpened}
+     width={{ sm: 200, lg: 250 }}
+     sx={{ zIndex: 1001 }}
+   >
+     <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+       <Navbar.Section className={classes.header}>
+         <a
+           href="#"
+           className={classes.link}
+           onClick={(event) => {
+             event.preventDefault();
+             addChat();
+           }}
+         >
+           <IconPlus className={classes.linkIcon} stroke={1.5} />
+           <span>New Chat</span>
+           <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+             <Burger
+               opened={navOpened}
+               onClick={() => setNavOpened(!navOpened)}
+               size="sm"
+               color={theme.colors.gray[6]}
+               mr="xl"
+             />
+           </MediaQuery>
+         </a>
+       </Navbar.Section>
+     </MediaQuery>
 
-      <MediaQuery smallerThan="sm" styles={{ marginTop: rem(36) }}>
-        <Navbar.Section
-          grow
-          mx="-xs"
-          px="xs"
-          className={classes.scrollbar}
-          style={{
-            overflowX: "hidden",
-            overflowY: "scroll",
-          }}
-        >
-          {links}
-        </Navbar.Section>
-      </MediaQuery>
-      <Navbar.Section className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={() => toggleColorScheme()}
-        >
-          <Icon className={classes.linkIcon} stroke={1.5} />
-          <span>
-            {upperFirst(colorScheme === "light" ? "dark" : "light")} theme
-          </span>
-        </a>
+     <MediaQuery smallerThan="sm" styles={{ marginTop: rem(36) }}>
+       <Navbar.Section
+         grow
+         mx="-xs"
+         px="xs"
+         className={classes.scrollbar}
+         style={{
+           overflowX: "hidden",
+           overflowY: "scroll",
+         }}
+       >
+         {links}
+       </Navbar.Section>
+     </MediaQuery>
+     <Navbar.Section className={classes.footer}>
+       <a
+         href="#"
+         className={classes.link}
+         onClick={() => toggleColorScheme()}
+       >
+         <Icon className={classes.linkIcon} stroke={1.5} />
+         <span>
+           {upperFirst(colorScheme === "light" ? "dark" : "light")} theme
+         </span>
+       </a>
 
-        <Modal opened={openedKeyModal} onClose={closeKeyModal} title="API Key">
-          <KeyModal close={closeKeyModal} />
-        </Modal>
+       <Modal opened={openedKeyModal} onClose={closeKeyModal} title="API Key">
+         <KeyModal close={closeKeyModal} />
+       </Modal>
 
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => {
-            event.preventDefault();
-            openedSettingsModal && closeSettingsModal();
-            openKeyModal();
-            if (isSmall) setNavOpened(false);
-          }}
-        >
-          <IconKey className={classes.linkIcon} stroke={1.5} />
-          <span>API Key</span>
-        </a>
+       <a
+         href="#"
+         className={classes.link}
+         onClick={(event) => {
+           event.preventDefault();
+           openedSettingsModal && closeSettingsModal();
+           openKeyModal();
+           if (isSmall) setNavOpened(false);
+         }}
+       >
+         <IconKey className={classes.linkIcon} stroke={1.5} />
+         <span>API Key2</span>
+       </a>
 
-        <Modal
-          opened={openedSettingsModal}
-          onClose={closeSettingsModal}
-          title="Settings"
-        >
-          <SettingsModal close={closeSettingsModal} />
-        </Modal>
+       <Modal
+         opened={openedSettingsModal}
+         onClose={closeSettingsModal}
+         title="Settings"
+       >
+         <SettingsModal close={closeSettingsModal} />
+       </Modal>
 
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => {
-            event.preventDefault();
-            openedKeyModal && closeKeyModal();
-            openSettingsModal();
+       <a
+         href="#"
+         className={classes.link}
+         onClick={(event) => {
+           event.preventDefault();
+           openedKeyModal && closeKeyModal();
+           openSettingsModal();
 
-            if (isSmall) setNavOpened(false);
-          }}
-        >
-          <IconSettings className={classes.linkIcon} stroke={1.5} />
-          <span>Settings</span>
-        </a>
-      </Navbar.Section>
-    </Navbar>
-  );
+           if (isSmall) setNavOpened(false);
+         }}
+       >
+         <IconSettings className={classes.linkIcon} stroke={1.5} />
+         <span>Settings</span>
+       </a>
+     </Navbar.Section>
+   </Navbar>
+}</div>
+    );
 }
