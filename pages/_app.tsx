@@ -27,7 +27,7 @@ export default function App(props: AppProps) {
   return (
     <UserProvider>
       <Head>
-        <title>Page title</title>
+        <title>Alumin.ai - chatGPT for work</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
