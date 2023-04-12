@@ -137,7 +137,7 @@ const ChatDisplay = () => {
   const onContextMenu = (event: any) => {
     event.preventDefault();
     setShowContextMenu(true);
-    setContextMenuPosition({ x: event.clientX+window.pageXOffset-197, y: event.clientY+window.pageYOffset-35 });
+    setContextMenuPosition({ x: event.clientX+window.pageXOffset-240, y: event.clientY+window.pageYOffset-35 });
   };
 
   const onClick = (event: any) => {

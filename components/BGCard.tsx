@@ -12,16 +12,18 @@ import Image from "next/image";
 const useStyles = createStyles((theme) => ({
   card: {
     position: "relative",
-    height: rem(280),
+    height: "25vw",
+    width: "25vw",
     backgroundColor: "white",
-      // theme.colorScheme === "dark"
-      //   ? theme.colors.dark[6]
-      //   : theme.colors.gray[0],
-
     [`&:hover .${getStylesRef("image")}`]: {
       transform: "scale(1.03)",
     },
-  },
+    "@media (max-width: 767px)": {
+      height: "90vw",
+      width: "90vw",
+      /* add more mobile styles here */
+    }
+    },
 
   image: {
     ...theme.fn.cover(),
@@ -29,8 +31,8 @@ const useStyles = createStyles((theme) => ({
     transition: "transform 500ms ease",
     marginTop: rem(-9),
     marginLeft: rem(-6),
-    width: '20vw',
-    height: '20vw'
+    width: '100%',
+    height: '100%'
   },
 
   overlay: {
@@ -63,14 +65,14 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface ImageCardProps {
-  // image: string;
+  image: string;
   title: string;
   description: string;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 export default function ImageCard({
-  // image,
+  image,
   title,
   description,
   onClick,
@@ -88,14 +90,14 @@ export default function ImageCard({
       onClick={onClick}
     >
       <div className={classes.image}>
-        {/* <Image
+        <Image
           src={image}
           fill
           sizes="(width: 20vw) 20vw,
                   (height: 20vw) 20vw,
                   20vw"
           alt={title}
-        /> */}
+        />
       </div>
       <div className={classes.overlay} />
 

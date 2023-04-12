@@ -291,7 +291,7 @@ export default function NavbarSimple() {
          }}
        >
          <IconKey className={classes.linkIcon} stroke={1.5} />
-         <span>API Key2</span>
+         <span>API Key</span>
        </a>
 
        <Modal

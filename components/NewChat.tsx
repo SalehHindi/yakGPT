@@ -11,10 +11,13 @@ import {
 } from "@tabler/icons-react";
 import BGCard from "./BGCard";
 
-import dalai_lama from "../public/chars/dalai_lama.png";
-import debate from "../public/chars/debate.png";
-import elon_musk from "../public/chars/elon_musk.png";
-import expert from "../public/chars/expert.png";
+import img1 from "../public/chars/img1.png";
+import img2 from "../public/chars/img2.png";
+import img3 from "../public/chars/img3.png";
+import img4 from "../public/chars/img4.png";
+import img5 from "../public/chars/img5.png";
+import img6 from "../public/chars/img6.png";
+import img7 from "../public/chars/img7.png";
 import idea_generator from "../public/chars/idea_generator.png";
 import marcus_aurelius from "../public/chars/marcus_aurelius.png";
 import oprah from "../public/chars/oprah.png";
@@ -31,25 +34,74 @@ const scriptBase = ({
   character: string;
   characterDescription: string;
 }) => {
-  return `I’m having trouble with a scene in my screenplay where a person has a conversation with a ${character}.
-
- ${characterDescription && `Description: ${characterDescription}`}
-
-I have written all of the person's lines already, but I haven’t written any of the lines for the ${character}. So what I’d like to do is give you the person’s lines, and have you provide a response for the ${character}.
-I’ll give you the person’s lines one at a time, so only give me a single line of dialogue from the ${character} each time, and then wait for me to tell you the next line from the person, and we’ll simply repeat that process until the scene is complete.
-
-Stay in character!
-
-The person’s first line is:
-
-Hello
-`;
+  return ``;
 };
 
 const characters = {
-  "Jira Tickets": {
+  "Product Manager 1": {
     shortDescription: "Finish Jira tickets faster",
-    avatar: expert,
+    avatar: img1,
+    prompt: `You are a product manager at Google. Your job is to write product requirements that will be handed to engineers to implement. You will be talking to a business expert who will describe the features they want to build and what problem it solves. Please describe features in detailed but simple English. 
+
+    You should describe possible features requirements, some edge cases we want to handle, some possible UI Layouts to present this feature, UI functionality, and backend endpoints. Start with describing the functional and business requirements and then move on to the engineering requirements.
+    
+    If you are unsure, please ask for clarification or detail on any of the above points. Err on the side of asking for detail.
+    `,
+  },
+  "Product Manager 2": {
+    shortDescription: "Alternative Product Manager",
+    avatar: img2,
+    prompt: `You are a product manager at Google. Your job is to write product requirements that will be handed to engineers to implement. You will be talking to a business expert who will describe the features they want to build and what problem it solves. Please describe features in detailed but simple English. 
+
+    You should describe possible features requirements, some edge cases we want to handle, some possible UI Layouts to present this feature, UI functionality, and backend endpoints. Start with describing the functional and business requirements and then move on to the engineering requirements.
+    
+    If you are unsure, please ask for clarification or detail on any of the above points. Err on the side of asking for detail.
+    `
+  },
+  "ERP Integration": {
+    shortDescription: "Integrate with ERPs",
+    avatar: img3,
+    prompt: `The following are details from a technical spec for an ERP doc. The ERP is Yardi. Your goal is to describe in detail how to integrate with Yardi's ERP as a payments company. Below are the relevant sections
+
+    Technical Spec Details:
+    
+    Please describe how you'd build a remittence feature against Yardi.`,
+  },
+  "Observability": {
+    shortDescription: "Triage and Fix Errors faster",
+    avatar: img4,
+    prompt: `You are given the following stack trace.
+    * Serving Flask app "app" (lazy loading)
+    * Environment: production
+      WARNING: This is a development server. Do not use it in a production deployment.
+      Use a production WSGI server instead.
+    * Debug mode: off
+    * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+   127.0.0.1 - - [12/Apr/2023 11:32:05] "OPTIONS /stream HTTP/1.1" 200 -
+   Hit streammmm
+   [2023-04-12 11:32:05,806] ERROR in app: Exception on /stream [POST]
+   Traceback (most recent call last):
+     File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+       response = self.full_dispatch_request()
+     File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 1952, in full_dispatch_request
+       rv = self.handle_user_exception(e)
+     File "/usr/local/lib/python3.9/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+       return cors_after_request(app.make_response(f(*args, **kwargs)))
+     File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 1821, in handle_user_exception
+       reraise(exc_type, exc_value, tb)
+     File "/usr/local/lib/python3.9/site-packages/flask/_compat.py", line 39, in reraise
+       raise value
+     File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 1950, in full_dispatch_request
+       rv = self.dispatch_request()
+     File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 1936, in dispatch_request
+       return self.view_functions[rule.endpoint](**req.view_args)
+     File "/Users/shindi/yakGPT/backend/app.py", line 312, in stream_response
+       chatId = data2.get("chatId", 'chatIdUnknown')
+   NameError: name 'data2' is not defined`,
+  },
+  "Agent Test": {
+    shortDescription: "Autonomously accomplish goals",
+    avatar: img6,
     prompt: `
     Assistant is a large language model fine tuned on tasks done by business analysts writing reports based on an ETL Job.
 
@@ -97,37 +149,13 @@ const characters = {
     [ ] Make reports from 2pm ETL Data
     [ ] Update JIRA that report is done.
     Thought:    
-    `
-  },
-  "ERP Integration": {
-    shortDescription: "Test 1",
-    avatar: idea_generator,
-    prompt: `
-    
-    `
-  },
-  "File Jobs": {
-    shortDescription: "Debug and fix file jobs",
-    characterDescription:
-      "Debug and fix file jobs2",
-    avatar: therapist,
-  },
-  "API Builder": {
-    shortDescription: "Brainstorming",
-    avatar: idea_generator,
-    prompt: `:`,
-  },
-  "Root Etymology": {
-    shortDescription: "Fun",
-    avatar: idea_generator,
-    prompt: `I will give you two words and I want you to trace the origins of the words, detailing each step, until you find a language origin in which the word origins were both spoken. For example, as 'hippo' and 'theology' both ultimately have roots in Greek, the answer would start 'Greek'. Start with the words 'management' and 'pizza'.`,
+    `,
   },
   "Time Travel Guide": {
-    shortDescription: "Fun",
-    avatar: idea_generator,
+    shortDescription: "Just for fun",
+    avatar: img5,
     prompt: `I want you to act as my time travel guide. I will provide you with the historical period or future time I want to visit and you will suggest best events, sights, or people to experience, as if we were living in those times. Do not write explanations, simply provide interesting suggestions and stay in character.`,
   },
-
 };
 
 function CardsCarousel({ children }: { children: React.ReactNode }) {
@@ -167,7 +195,8 @@ export default function NewChatCarousel() {
           const character = characters[key];
           return (
             <BGCard
-              key={key}
+            key={key}
+              image={character.avatar}
               title={key}
               // image={character.avatar.src}
               description={character.shortDescription}
