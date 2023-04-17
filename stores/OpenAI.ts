@@ -230,22 +230,35 @@ export async function streamCompletion(
           return;
         }
 
+        // WTFF is going on here???
         let parsed;
+        let content
         try {
           parsed = JSON.parse(cleaned).data;
+          console.log("waterfall")
+          console.log(parsed)
+          console.log(parsed.choices[0])
+          console.log(parsed.choices[0]?.delta)
+          console.log(parsed.choices[0]?.delta?.content)
+          content = parsed.choices[0]?.delta?.content;
+  
           console.log("PARSED")
+
+          try {
+            content = message
+          } catch (e) {
+            console.log("ERROR2")
+            console.log(e)
+
+            content = ""
+  
+          }
         } catch (e) {
-          console.log("ERROR")
+          console.log("ERROR1")
           console.log(e)
           return;
         }
 
-        console.log("waterfall")
-        console.log(parsed)
-        console.log(parsed.choices[0])
-        console.log(parsed.choices[0]?.delta)
-        console.log(parsed.choices[0]?.delta?.content)
-        const content = parsed.choices[0]?.delta?.content;
         if (content === undefined) {
           continue;
         }
