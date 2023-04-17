@@ -221,6 +221,8 @@ export async function streamCompletion(
     // My response: 
       // "{\"data\": {\"id\": \"chatcmpl-70cqSAME6tnj64Sv7Mpfcw1GxT3gu\", \"object\": \"chat.completion.chunk\", \"created\": 1680383676, \"model\": \"gpt-3.5-turbo-0301\", \"choices\": [{\"delta\": {\"content\": \"next chunk!!\"}, \"index\": 0, \"finish_reason\": null}]}}"
       for (const message of allMessages) {
+        console.log("message")
+        console.log(message)
         const cleaned = "\{\"" + message.toString().slice(2);
         console.log("cleaned")
         console.log(cleaned)
