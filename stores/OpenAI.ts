@@ -172,6 +172,7 @@ export async function streamCompletion(
       }
       console.log("CHUNK!!!")
       console.log(chunk)
+      console.log(chunk.toString())
       const allMessages = chunk.toString().split("\n\n");
       console.log(allMessages) // This is the returned message!!!
      
