@@ -40,6 +40,7 @@ export default function Home() {
         <meta name="description" content="A new way to do work" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        
       </Head>
       <AppShell
         padding={0}
