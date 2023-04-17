@@ -244,6 +244,10 @@ export async function streamCompletion(
   
           console.log("PARSED")
 
+        } catch (e) {
+          console.log("ERROR1")
+          console.log(e)
+
           try {
             content = message
           } catch (e) {
@@ -253,9 +257,9 @@ export async function streamCompletion(
             content = ""
   
           }
-        } catch (e) {
-          console.log("ERROR1")
-          console.log(e)
+
+
+
           return;
         }
 
