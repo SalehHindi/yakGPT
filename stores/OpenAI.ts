@@ -56,8 +56,8 @@ export async function _streamCompletion(
   payload: string,
   apiKey: string,
   abortController?: AbortController,
-  callback?: ((res: http.IncomingMessage) => void) | undefined,
-  errorCallback?: ((res: http.IncomingMessage, body: string) => void) | undefined
+  callback?: ((res: any) => void) | undefined,
+  errorCallback?: ((res: any, body: string) => void) | undefined
 ) {
   const req = https.request(
   // const req = https.request(
@@ -132,10 +132,14 @@ export async function streamCompletion(
   activeChatId?: String, 
   userId?: String,
   abortController?: AbortController,
-  callback?: ((res: http.IncomingMessage) => void) | undefined,
+  callback?: ((res: any) => void) | undefined,
   endCallback?: ((tokensUsed: number) => void) | undefined,
-  errorCallback?: ((res: http.IncomingMessage, body: string) => void) | undefined
+  errorCallback?: ((res: any, body: string) => void) | undefined
 ) {
+  // alert("hi")
+  // console.log("User")
+  // console.log(user)
+
   const submitMessages = truncateMessages(messages, 4096 - params.max_tokens);
   console.log(`Sending ${submitMessages.length} messages:`);
   console.log(submitMessages.map((m) => m.content.slice(0, 50)).join("\n"));
@@ -157,9 +161,9 @@ export async function streamCompletion(
   });
 
   let buffer = "";
-  const successCallback = (res: http.IncomingMessage) => {
+  const successCallback = (res: any) => {
     console.log("successCallback before on data")
-    res.on("data", (chunk) => {
+    res.on("data", (chunk:any) => {
       console.log("successCallback after on data")
       if (abortController?.signal.aborted) {
         res.destroy();
