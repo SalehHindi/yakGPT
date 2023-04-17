@@ -230,6 +230,7 @@ export async function streamCompletion(
           console.log("PARSED")
         } catch (e) {
           console.log("ERROR")
+          console.log(e)
           return;
         }
 
