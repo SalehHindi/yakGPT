@@ -4,6 +4,7 @@ import { Message, truncateMessages } from "./Message";
 import encoder from "@nem035/gpt-3-encoder";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 const countTokens = (text: string) => encoder.encode(text).length;
 
@@ -58,10 +59,10 @@ export async function _streamCompletion(
   callback?: ((res: http.IncomingMessage) => void) | undefined,
   errorCallback?: ((res: http.IncomingMessage, body: string) => void) | undefined
 ) {
-  const req = http.request(
+  const req = https.request(
   // const req = https.request(
     {      
-      hostname: "app.alumin.ai",
+      hostname: "34.30.17.83",
       port: 5000,
       path: "/stream",
       method: "POST",
@@ -129,6 +130,7 @@ export async function streamCompletion(
   params: ChatCompletionParams,
   apiKey: string,
   activeChatId?: String, 
+  userId?: String,
   abortController?: AbortController,
   callback?: ((res: http.IncomingMessage) => void) | undefined,
   endCallback?: ((tokensUsed: number) => void) | undefined,
@@ -145,6 +147,7 @@ export async function streamCompletion(
 
   const payload = JSON.stringify({
     chatId: activeChatId,
+    userId: userId,
     messages: messages.map(({ role, content }) => ({ role, content })),
     stream: true,
     ...{

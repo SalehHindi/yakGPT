@@ -27,6 +27,7 @@ interface ChatState {
   apiState: APIState;
   apiKey: string | undefined;
   chats: Chat[];
+  userId: string;
   activeChatId: string | undefined;
   colorScheme: "light" | "dark";
   currentAbortController: AbortController | undefined;
@@ -36,6 +37,7 @@ interface ChatState {
   pushToTalkMode: boolean;
   editingMessage: Message | undefined;
 
+  setUserId: (userId: string) => void;
   addChat: (title?: string) => void;
   deleteChat: (id: string) => void;
   setActiveChat: (id: string) => void;
@@ -80,6 +82,7 @@ const initialState = {
       messages: [],
     },
   ],
+  userId: "working so far",
   activeChatId: initialChatId,
   colorScheme: "light" as "light" | "dark",
   currentAbortController: undefined,
@@ -96,6 +99,10 @@ export const useChatStore = create<ChatState>()(
   persist(
     (set, get) => ({
       ...initialState,
+      setUserId: (userId: string) =>
+        set((state) => ({
+          userId: userId
+        })),
       deleteChat: (id: string) =>
         set((state) => ({
           chats: state.chats.filter((chat) => chat.id !== id),
@@ -232,12 +239,15 @@ export const useChatStore = create<ChatState>()(
         const abortController = new AbortController();
         set((state) => ({ currentAbortController: abortController }));
 
+        const userId = get().userId
+
         // ASSISTANT REQUEST
         await streamCompletion(
           chat.messages,
           settings,
           apiKey,
           chat.id,
+          userId,
           abortController,
           (content) => {
             console.log("3333")
@@ -326,6 +336,7 @@ export const useChatStore = create<ChatState>()(
               settings,
               apiKey,
               chat.id,
+              userId,
               undefined,
               (content) => {
                 set((state) => ({

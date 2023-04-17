@@ -12,6 +12,7 @@ import { useState, useRef } from 'react';
 import { useChatStore } from "@/stores/ChatStore";
 import { IconEdit, IconRepeat, IconSettings } from "@tabler/icons-react";
 import MessageDisplay from "./MessageDisplay";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 import UserIcon from "./UserIcon";
 import AssistantIcon from "./AssistantIcon";
@@ -114,6 +115,10 @@ const useStyles = createStyles((theme: MantineTheme) => ({
 
 export default function ChatDisplay({ message }: { message: Message }) {
   const { classes, cx } = useStyles();  
+
+  const setUserId = useChatStore((state) => state.setUserId);
+  const { user, error, isLoading } = useUser();
+  setUserId(user?.email || "no user")
 
   const setEditingMessage = useChatStore((state) => state.setEditingMessage);
   const pushToTalkMode = useChatStore((state) => state.pushToTalkMode);

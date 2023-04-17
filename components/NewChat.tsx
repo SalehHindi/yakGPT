@@ -10,6 +10,7 @@ import {
   IconArrowRight,
 } from "@tabler/icons-react";
 import BGCard from "./BGCard";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 import img1 from "../public/chars/img1.png";
 import img2 from "../public/chars/img2.png";
@@ -185,6 +186,15 @@ function CardsCarousel({ children }: { children: React.ReactNode }) {
 export default function NewChatCarousel() {
   const submitMessage = useChatStore((state) => state.submitMessage);
   const setChosenCharacter = useChatStore((state) => state.setChosenCharacter);
+  const setUserId = useChatStore((state) => state.setUserId);
+  
+  const { user, error, isLoading } = useUser();
+
+  setUserId(user?.email || "no user")
+  console.log("USER!!")
+  console.log(user)
+  // setUserId(user.id)
+
 
   return (
     <Container py="xl">

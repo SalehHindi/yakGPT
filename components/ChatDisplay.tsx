@@ -10,6 +10,7 @@ import {
 import { useChatStore } from "@/stores/ChatStore";
 import NewChat from "./NewChat";
 import MuHeader from "./MuHeader";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 import ChatMessage from "./ChatMessage";
 import { Message } from "@/stores/Message";
@@ -121,6 +122,10 @@ const ChatDisplay = () => {
 
   const pushToTalkMode = useChatStore((state) => state.pushToTalkMode);
   const lastMessage = activeChat?.messages[activeChat.messages.length - 1];
+
+  const setUserId = useChatStore((state) => state.setUserId);
+  const { user, error, isLoading } = useUser();
+  setUserId(user?.email || "no user")
 
   const scrolledToBottom = () => {
     const winScroll =

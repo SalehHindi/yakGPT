@@ -309,7 +309,7 @@ def stream_response():
     messages = data.get("messages", [])
     chatId = data.get("chatId", 'chatIdUnknown')
     model = data.get("model", 'gpt-3.5-turbo')
-    userId = "Saleh"
+    userId = data.get("userId", "Saleh1"),
 
     current_date = datetime.datetime.now()
     formatted_date = current_date.strftime('%Y-%m-%d')
@@ -319,7 +319,7 @@ def stream_response():
         model=model, 
         messages = messages,
         # stream=True
-        pl_tags=[f"User:{userId}", model, formatted_date, chatId], # TODO: Should add dev, prod, model    
+        pl_tags=[f"User: {userId}", model, formatted_date, chatId], # TODO: Should add dev, prod, model    
     )
     assistant_response = completion.choices[0].message.content
 

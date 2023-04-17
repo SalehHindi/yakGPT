@@ -14,6 +14,7 @@ import {
   IconMicrophoneOff,
   IconX,
 } from "@tabler/icons-react";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function ChatInput() {
   const theme = useMantineTheme();
@@ -29,6 +30,10 @@ export default function ChatInput() {
 
   const editingMessage = useChatStore((state) => state.editingMessage);
   const setEditingMessage = useChatStore((state) => state.setEditingMessage);
+
+  const setUserId = useChatStore((state) => state.setUserId);
+  const { user, error, isLoading } = useUser();
+  setUserId(user?.email || "no user")
 
   const doSubmit = () => {
     if (apiState === "loading") {
