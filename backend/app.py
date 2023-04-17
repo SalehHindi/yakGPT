@@ -355,7 +355,8 @@ def stream_response():
     # ]
 
     # return Response(stream_with_context(number_stream()), content_type='application/json')
-    return Response(stream_with_context(json.dumps(resp)), content_type='application/json')
+    # return Response(stream_with_context(json.dumps(resp)), content_type='application/json')
+    return Response(json.dumps(resp), content_type='application/json')
 
 
 @app.route('/agent', methods=["POST"])
