@@ -1,6 +1,7 @@
 import PyPDF2
 import re
 
+
 def remove_duplicate_whitespace(text: str) -> str:
     return re.sub(r'\s{6,}', ' ', text)
 
