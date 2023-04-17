@@ -62,7 +62,7 @@ export async function _streamCompletion(
   const req = https.request(
   // const req = https.request(
     {      
-      hostname: "34.30.17.83",
+      hostname: "app.alumin.ai",
       port: 5000,
       path: "/stream",
       method: "POST",
