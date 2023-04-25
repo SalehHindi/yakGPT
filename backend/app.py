@@ -309,7 +309,7 @@ def stream_response():
     messages = data.get("messages", [])
     chatId = data.get("chatId", 'chatIdUnknown')
     model = data.get("model", 'gpt-3.5-turbo')
-    userId = data.get("userId", "Saleh1"),
+    userId = data.get("userId", "Undefined User")
 
     current_date = datetime.datetime.now()
     formatted_date = current_date.strftime('%Y-%m-%d')
