@@ -76,12 +76,17 @@ const AudioRecorder = () => {
       console.log("Sending audio data to OpenAI...");
 
       try {
-        const apiUrl = "https://api.openai.com/v1/audio/transcriptions";
+        // const apiUrl = "https://api.openai.com/v1/audio/transcriptions";
+        const apiUrl = "http://app.alumin.ai:5000/audio/transcriptions";
+        // const apiUrl = "http://localhost:5000/audio/transcriptions";
 
         const formData = new FormData();
         formData.append("file", blob, "audio.webm");
         formData.append("model", "whisper-1");
         formData.append("language", "en");
+
+        console.log("SENDING AUDIO TO OPENAI")
+        console.log(formData)
 
         const response = await axios.post(apiUrl, formData, {
           headers: {
@@ -89,6 +94,9 @@ const AudioRecorder = () => {
             Authorization: `Bearer ${apiKey}`,
           },
         });
+
+        console.log("audio transcribe response:")
+        console.log(response)
 
         if (response.data.error) {
           console.error("Error sending audio data:", response.data.error);
@@ -100,10 +108,10 @@ const AudioRecorder = () => {
           return;
         }
 
-        console.log("Audio data sent successfully:", response.data.text);
+        console.log("Audio data sent successfully:", response.data);
 
         // Empty audio, do nothing
-        if (response.data.text === "") {
+        if (response.data === "") {
           setApiState("idle");
           delMessage(newMessage);
           return;
@@ -112,7 +120,7 @@ const AudioRecorder = () => {
 
         submitMessage({
           id: newMessage.id,
-          content: response.data.text,
+          content: response.data,
           role: "user",
         });
       } catch (err) {

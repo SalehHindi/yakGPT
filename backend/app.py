@@ -32,6 +32,9 @@ from langchain.utils import get_from_dict_or_env
 
 from langchain.llms import PromptLayerOpenAI
 import promptlayer
+import whisper
+
+whisper_model = whisper.load_model("tiny.en")
 openai = promptlayer.openai
 
 # TODO: This should be in an env and per user
@@ -462,6 +465,30 @@ def agent_respond():
     }}
 
     return Response(stream_with_context(json.dumps(resp)), content_type='application/json')
+
+@app.route('/audio/transcriptions', methods=["POST"])
+def audio_transcribe():
+    print("Hit /audio/transcriptions")
+
+    audio_recording = request.files.get('file', None)
+    if audio_recording is None:
+        print("ERROR NO AUDIO RECORDING!!!")
+        return 
+
+    current_date = datetime.datetime.now()
+    formatted_date = current_date.strftime('%Y-%m-%d')
+    epoch_time = str(int(current_date.timestamp()))
+
+    audio_file_name = f"audio_file_{epoch_time}_audio.webm"
+    audio_recording.save(audio_file_name)
+
+    result = whisper_model.transcribe(audio_file_name)
+    text_result = result.get("text")
+    print(f"text_result from transcription:\n{text_result}")
+
+    return Response(stream_with_context(json.dumps(text_result)), content_type='application/json')
+
+
 
 # @app.route("/chat-history-save", methods=['POST'])
 # def chat_history_save():
