@@ -77,7 +77,7 @@ const AudioRecorder = () => {
 
       try {
         // const apiUrl = "https://api.openai.com/v1/audio/transcriptions";
-        var apiUrl = "http://app.alumin.ai:5000/audio/transcriptions";
+        var apiUrl = "https://app.alumin.ai:5000/audio/transcriptions";
         if (window.location.hostname.includes("localhost")) {
           apiUrl = "http://localhost:5000/audio/transcriptions";
         }
