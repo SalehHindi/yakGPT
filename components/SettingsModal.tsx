@@ -34,7 +34,10 @@ export default function SettingsModal({ close }: { close: () => void }) {
       if (!apiKey) return;
 
       try {
-        const modelIDs = await fetchModels(apiKey);
+        const modelIDs = [
+          'gpt-3.5-turbo',
+          'gpt-4',
+        ];
         // Use only models that start with gpt-3.5 or gpt-4
         setModels(
           modelIDs.filter(
