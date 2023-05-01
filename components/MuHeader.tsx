@@ -9,6 +9,7 @@ import {
   Text,
   MediaQuery,
   Divider,
+  Select,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
@@ -36,6 +37,8 @@ const useStyles = createStyles((theme) => ({
 
   social: {
     width: rem(260),
+    marginTop: '5px',
+    marginBottom: 'auto',
 
     [theme.fn.smallerThan("sm")]: {
       width: "auto",
@@ -92,6 +95,8 @@ export default function HeaderMiddle({ children }: any) {
   const activeChat = chats.find((chat) => chat.id === activeChatId);
 
   const activeModel = useChatStore((state) => state.settingsForm.model);
+  const settingsForm = useChatStore((state) => state.settingsForm);
+  const updateModel = useChatStore((state) => state.updateModel);
 
   const navOpened = useChatStore((state) => state.navOpened);
   const setNavOpened = useChatStore((state) => state.setNavOpened);
@@ -103,13 +108,24 @@ export default function HeaderMiddle({ children }: any) {
 
   const isSmall = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
+  const setDropdownValue = (newModel: any) => {
+    updateModel(newModel)
+    // TODO:
+    // Currently, activeModel represents the active model for the user across chats. This means 
+    // they can switch models midway through a chat. I think this is fine but good to note.
+    // To fix a model for a chat, the each chat in chatStore.chats should have an activeModel
+  }
+
+  // Note that chosenCharacter tells you if someone clicked a certain mode or Character
+  // messages and !chosenCharacter tells you new chat
+
   const modelDisplayNames = {
     "gpt-3.5-turbo": "ChatGPT-3.5",
     "gpt-4": "GPT-4",
   };
 
   return (
-    <Header height={36} mb={120} sx={{ zIndex: 1002 }}>
+    <Header height={36} mb={120} sx={{ zIndex: 1002, height: '2.8rem', maxHeight: '2.8rem' }}>
       <Container className={classes.inner}>
         <MediaQuery largerThan="sm" styles={{ display: "none", width: 0 }}>
           <Burger
@@ -134,11 +150,23 @@ export default function HeaderMiddle({ children }: any) {
                 </MediaQuery>
               </>
             ) : null}
-            <Text size="sm">
-              {modelDisplayNames[
-                activeModel as keyof typeof modelDisplayNames
-              ] || activeModel}
-            </Text>
+            { activeChat?.messages.length == 0 ? // If user is on new chat screen
+              <Select
+                // label="Model"
+                placeholder="Select a model"
+                data={[
+                  { value: 'gpt-3.5-turbo', label: 'ChatGPT-3.5' },
+                  { value: 'gpt-4', label: 'GPT-4' },
+                ]}
+                value={activeModel}
+                onChange={setDropdownValue}
+              /> :
+              <Text size="sm">
+                {modelDisplayNames[
+                  activeModel as keyof typeof modelDisplayNames
+                ] || activeModel}
+              </Text>
+            }
             <Divider size="xs" orientation="vertical" />
             <Text size="sm">
               ${(((activeChat?.tokensUsed || 0) / 1000) * 0.002).toFixed(2)}

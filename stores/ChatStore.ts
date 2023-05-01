@@ -49,6 +49,7 @@ interface ChatState {
   setApiKey: (key: string) => void;
   setApiState: (state: APIState) => void;
   updateSettingsForm: (settings: ChatState["settingsForm"]) => void;
+  updateModel: (settings: string) => void;
   abortCurrentRequest: () => void;
   setChosenCharacter: (name: string) => void;
   setNavOpened: (opened: boolean) => void;
@@ -366,6 +367,8 @@ export const useChatStore = create<ChatState>()(
       // setModel: (model: string) => set((state) => ({ model })),
       updateSettingsForm: (settingsForm: ChatState["settingsForm"]) =>
         set((state) => ({ settingsForm })),
+      updateModel: (model: string) =>
+        set((state) => ({ settingsForm: { ...state.settingsForm, model} })),
       abortCurrentRequest: () => {
         const currentAbortController = get().currentAbortController;
         console.log("aborting current request", currentAbortController);
